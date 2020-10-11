@@ -1,0 +1,18 @@
+uploadArchives {
+    apply plugin: 'maven'
+    def group = rootProject.ext.maven.group
+    def mavenUrl = rootProject.ext.maven.url
+    def userName = rootProject.ext.maven.user
+    def password = rootProject.ext.maven.pwd
+    repositories.mavenDeployer {
+        repository(url: mavenUrl) {
+            authentication(userName: userName, password: password)
+        }
+        pom.project {
+            groupId group
+            artifactId ARTIFACT_ID
+            version ARTIFACT_VERSION
+            packaging 'aar'
+        }
+    }
+}

@@ -1,0 +1,55 @@
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+version ARTIFACT_VERSION
+group rootProject.ext.maven.group
+
+def siteUrl = ARTIFACT_URL
+
+bintray {
+    user = rootProject.ext.bintray.user
+    key = rootProject.ext.bintray.key
+    configurations = ['archives']
+    pkg {
+        repo = rootProject.ext.bintray.repo
+        name = ARTIFACT_NAME
+        desc = ARTIFACT_DESC
+        websiteUrl = ARTIFACT_URL
+        issueTrackerUrl = rootProject.ext.bintray.projectUrl + '/issues'
+        vcsUrl = ARTIFACT_URL
+        licenses = ['Apache-2.0']
+        labels = ['android']
+        publish = true
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name ARTIFACT_NAME
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id rootProject.ext.bintray.author
+                        name rootProject.ext.bintray.author
+                        email rootProject.ext.bintray.email
+                    }
+                }
+                scm {
+                    connection siteUrl
+                    developerConnection siteUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
