@@ -4,6 +4,8 @@ uploadArchives {
     def mavenUrl = rootProject.ext.maven.url
     def userName = rootProject.ext.maven.user
     def password = rootProject.ext.maven.pwd
+    def versionName = ARTIFACT_VERSION
+
     repositories.mavenDeployer {
         repository(url: mavenUrl) {
             authentication(userName: userName, password: password)
@@ -11,7 +13,7 @@ uploadArchives {
         pom.project {
             groupId group
             artifactId ARTIFACT_ID
-            version ARTIFACT_VERSION
+            version versionName
             packaging 'aar'
         }
     }

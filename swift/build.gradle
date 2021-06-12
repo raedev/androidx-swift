@@ -21,19 +21,23 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    // Google Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // https://github.com/Blankj/AndroidUtilCode
+    api 'com.blankj:utilcodex:1.30.5'
 }
 
+// 上传Maven配置
 ext {
-    ARTIFACT_ID = 'swifit'
-    ARTIFACT_NAME = 'Swift'
-    ARTIFACT_DESC = 'Android Swift Library'
-    ARTIFACT_URL = 'https://github.com/raedev/android-component/'
-    ARTIFACT_VERSION = '1.0.0'
+    ARTIFACT_ID = 'swift'
+    ARTIFACT_NAME = 'swift'
+    ARTIFACT_DESC = 'Android swift library'
+    ARTIFACT_URL = 'https://github.com/raedev/android-component/tree/swift'
+    ARTIFACT_VERSION = '1.0.1' // 1.0.1 更新时间 2021-05-24
 }
-apply from: rootProject.file('artifacts.gradle')
-//apply from: rootProject.file('publish.gradle')
-apply from: rootProject.file('upload.gradle')
+//apply from: rootProject.file('artifacts.gradle')
+apply from: rootProject.file('upload.gradle') // maven
