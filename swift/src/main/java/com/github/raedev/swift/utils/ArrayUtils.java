@@ -25,7 +25,7 @@ public final class ArrayUtils {
      * @return 数组为空返回-1，否则返回数量
      */
     public static <T> int count(List<T> list) {
-        return isEmpty(list) ? -1 : list.size();
+        return isEmpty(list) ? 0 : list.size();
     }
 
 }

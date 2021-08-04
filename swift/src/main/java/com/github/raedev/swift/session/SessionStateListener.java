@@ -7,6 +7,7 @@ public interface SessionStateListener {
 
     /**
      * 用户信息改变
+     * @param sessionManager 用户管理器
      */
     void onUserInfoChanged(SessionManager sessionManager);
 }
