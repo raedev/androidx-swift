@@ -1,5 +1,9 @@
 package com.github.raedev.swift.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 文本处理
  * @author RAE
@@ -24,6 +28,17 @@ public final class TextUtils {
     }
 
     /**
+     * 字符串分割成数组
+     * @param text      字符串
+     * @param separator 分割符号，比如逗号
+     * @return 数组
+     */
+    public static List<String> explode(String text, String separator) {
+        String[] split = text.split(separator);
+        return new ArrayList<>(Arrays.asList(split));
+    }
+
+    /**
      * 转换成整型
      * @param text 文本
      */
@@ -33,7 +48,7 @@ public final class TextUtils {
 
     /**
      * 转换成整型
-     * @param text 文本
+     * @param text         文本
      * @param defaultValue 转换失败的默认值
      */
     public static int parseInt(CharSequence text, int defaultValue) {

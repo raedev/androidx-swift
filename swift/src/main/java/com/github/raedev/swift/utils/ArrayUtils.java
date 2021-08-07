@@ -12,7 +12,7 @@ public final class ArrayUtils {
     /**
      * 判断集合是否为空
      * @param list 集合
-     * @param <T> 类型
+     * @param <T>  类型
      * @return 是否为空
      */
     public static <T> boolean isEmpty(List<T> list) {
@@ -26,6 +26,24 @@ public final class ArrayUtils {
      */
     public static <T> int count(List<T> list) {
         return isEmpty(list) ? 0 : list.size();
+    }
+
+    /**
+     * 数组以字符串分割
+     * @param list      数组
+     * @param separator 分割字符串
+     * @param <T>       类型
+     * @return 字符串
+     */
+    public static <T> String join(List<T> list, String separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            if (i != 0) {
+                sb.append(separator);
+            }
+            sb.append(list.get(i).toString());
+        }
+        return sb.toString();
     }
 
 }
