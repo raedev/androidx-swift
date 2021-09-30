@@ -1,13 +1,14 @@
-apply plugin: 'com.android.library'
+plugins {
+    id 'com.android.library'
+}
+apply from: rootProject.file('upload.gradle') // maven
 
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        minSdkVersion 21
+        targetSdkVersion 31
     }
 
     buildTypes {
@@ -19,28 +20,21 @@ android {
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation rootProject.ext.dependencies.gson
-    implementation rootProject.ext.dependencies.rxjava
-    implementation rootProject.ext.dependencies.rxandroid
-    implementation rootProject.ext.dependencies.rxlifecycle
-
     // https://github.com/Blankj/AndroidUtilCode
-     api 'com.blankj:utilcodex:1.30.5'
+    api 'com.blankj:utilcodex:1.30.5'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.1'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'com.trello.rxlifecycle4:rxlifecycle-android-lifecycle:4.0.2'
 }
 
-if (enableUpload.toBoolean()) {
-    // 上传Maven配置
-    ext {
-        ARTIFACT_ID = 'swift'
-        ARTIFACT_NAME = 'swift'
-        ARTIFACT_DESC = 'Android swift library'
-        ARTIFACT_URL = 'https://github.com/raedev/android-component/tree/swift'
-        ARTIFACT_VERSION = '1.0.1' // 1.0.1 更新时间 2021-05-24
-    }
-    //apply from: rootProject.file('artifacts.gradle')
-    apply from: rootProject.file('upload.gradle') // maven
+// 上传Maven配置
+ext {
+    ARTIFACT_GROUP = 'com.github.raedev'
+    ARTIFACT_ID = 'swift'
+    ARTIFACT_NAME = 'swift'
+    ARTIFACT_DESC = 'Android swift library'
+    ARTIFACT_URL = 'https://github.com/raedev/android-component/tree/swift'
+    ARTIFACT_VERSION = '1.0.2' // 1.0.1 更新时间 2021-05-24
 }

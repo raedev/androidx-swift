@@ -4,9 +4,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.1"
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath "com.android.tools.build:gradle:7.0.2"
     }
 }
 
@@ -22,32 +20,10 @@ task clean(type: Delete) {
 }
 
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newInputStream())
-
 ext {
     android = [
             compileSdkVersion: 29,
             targetSdkVersion : 29,
             minSdkVersion    : 21
     ]
-
-    // nexus maven 上传配置信息
-    maven = [
-            group: 'com.github.raedev',
-            url  : properties.getProperty('maven.url'), // 正式库
-            user : properties.getProperty('maven.user'),
-            pwd  : properties.getProperty('maven.pwd'),
-    ]
-
-    // JCenter配置信息
-    bintray = [
-            user      : properties.getProperty('bintray.user'),
-            key       : properties.getProperty('bintray.key'),
-            repo      : 'Android',
-            projectUrl: 'https://github.com/raedev/android-component',
-            author    : 'RAE',
-            email     : 'raedev@qq.com'
-    ]
-
 }

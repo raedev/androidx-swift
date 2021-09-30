@@ -18,6 +18,7 @@ import java.util.List;
  * @author RAE
  * @date 2021/05/24
  */
+@SuppressWarnings("deprecation")
 public class ViewPagerFragmentAdapter extends FragmentPagerAdapter {
     private final List<String> mTitle = new ArrayList<>();
     private final List<Integer> mIcons = new ArrayList<>();
