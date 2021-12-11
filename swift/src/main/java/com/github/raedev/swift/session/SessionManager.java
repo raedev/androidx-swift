@@ -26,6 +26,7 @@ public abstract class SessionManager {
         private final Context mContext;
         private String mSessionName;
         private Class<?> mUserClass;
+        private boolean mIsJsonMode;
 
         public Builder(Context context) {
             mContext = context.getApplicationContext();
@@ -41,12 +42,20 @@ public abstract class SessionManager {
             return this;
         }
 
+        public Builder setJsonMode(boolean isJsonMode) {
+            mIsJsonMode = isJsonMode;
+            return this;
+        }
+
         public SessionManager build() {
             if (mUserClass == null) {
                 throw new NullPointerException("session user class can't null");
             }
             if (TextUtils.isEmpty(mSessionName)) {
                 mSessionName = mContext.getPackageName() + ".session";
+            }
+            if (mIsJsonMode) {
+                return new JsonFileSessionManager(mContext, mSessionName, mUserClass);
             }
             return new SharedPreferencesSessionManager(mContext, mSessionName, mUserClass);
         }
@@ -62,6 +71,10 @@ public abstract class SessionManager {
     public static void initDefaultSessionManager(Context context, Class<?> userInfoClass) {
         SessionManager sessionManager = new Builder(context).setUserClass(userInfoClass).build();
         setSessionManager(sessionManager);
+    }
+
+    public static void init(Builder builder) {
+        setSessionManager(builder.build());
     }
 
     /**

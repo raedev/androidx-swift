@@ -76,6 +76,21 @@ public class ConfigurationContext<T> implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         String methodName = method.getName().toUpperCase();
+        if (methodName.equalsIgnoreCase("setValue")) {
+            mPreference.edit().putString(String.valueOf(args[0]), String.valueOf(args[1])).apply();
+            return null;
+        }
+        if (methodName.equalsIgnoreCase("getValue")) {
+            return mPreference.getString(String.valueOf(args[0]), args[1] == null ? null : String.valueOf(args[1]));
+        }
+        if (methodName.equalsIgnoreCase("REMOVE")) {
+            mPreference.edit().remove(String.valueOf(args[0])).apply();
+            return null;
+        }
+        if (methodName.equalsIgnoreCase("CLEAR")) {
+            mPreference.edit().clear().apply();
+            return null;
+        }
         // Get方法处理
         if (methodName.startsWith("SET")) {
             setValue(methodName.replaceFirst("SET", ""), method, args);
