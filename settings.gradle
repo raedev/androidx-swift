@@ -1,3 +1,1 @@
-//include ':swift-rxjava3'
 include ':swift'
-include ':app'

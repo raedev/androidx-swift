@@ -1,10 +1,7 @@
-/*
- * 武大吉奥Maven 依赖包上传
- */
 apply plugin: 'maven-publish'
 Properties properties = new Properties()
 properties.load(new FileInputStream(rootProject.file("local.properties")))
-def mavenUrl = 'https://maven.raeblog.com/repository/maven-rae' // 正式版本
+def mavenUrl = properties.getProperty("maven.url")
 def mavenUser = properties.getProperty("maven.user")
 def mavenPwd = properties.getProperty("maven.pwd")
 
@@ -16,8 +13,8 @@ afterEvaluate {
     log("maven url: ${mavenUrl}")
     log("maven artifact: ${ARTIFACT_GROUP}:${ARTIFACT_ID}:${ARTIFACT_VERSION}")
     log("maven credentials: ${mavenUser}@${mavenPwd}")
-    if (mavenUser == null || mavenPwd == null) {
-        throw new GradleException("请在local.properties配置好上传到maven的账户和密码：maven.user、maven.pwd")
+    if (mavenUrl == null || mavenUser == null || mavenPwd == null) {
+        throw new GradleException("请在local.properties 配置以下参数：maven.url、maven.user、maven.pwd")
     }
     task androidSourcesJar(type: Jar) {
         classifier = 'sources'
