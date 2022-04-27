@@ -14,35 +14,41 @@
  * limitations under the License.
  */
 
-package androidx.swift.config;
+package androidx.swift.rxjava3.paging;
 
-import io.reactivex.rxjava3.annotations.Nullable;
+import androidx.swift.mvp.ILoadMore;
 
-public interface IConfiguration {
+import java.util.List;
 
-    /**
-     * 快速设置值
-     * @param key 键
-     * @param value 值
-     */
-    void setValue(String key, String value);
+@SuppressWarnings("unused")
+public interface PageableObservable<T> extends ILoadMore {
 
     /**
-     * 获取配置值
-     * @param key 键
-     * @param defValue 默认值
-     * @return
+     * 开始加载第一页
      */
-    String getValue(String key, @Nullable String defValue);
+    void start();
 
     /**
-     * 删除键
-     * @param key
+     * 获取当前分页数据
+     * @return 数据
      */
-    void remove(String key);
+    List<T> getDataList();
 
     /**
-     * 清除所有
+     * 获取当前分页
+     * @return 当前分页
      */
-    void clear();
+    int getCurrentPage();
+
+    /**
+     * 是否为加载更多
+     * @return 是否为加载更多
+     */
+    boolean isLoadMore();
+
+    /**
+     * 是否没有数据
+     * @return 是否没有数据
+     */
+    boolean isEmptyData();
 }

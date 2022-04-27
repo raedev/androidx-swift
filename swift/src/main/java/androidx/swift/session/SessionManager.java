@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022 RAE
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package androidx.swift.session;
 
 import android.content.Context;
@@ -9,13 +25,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 用户会话管理器
- * <p>用于管理用户的整个生命状态，如：登录、登出、获取用户信息;</p>
- * <p>如果一个应用有多个会话管理器的情况，请手动管理默认SessionManager获取方式，比如新建一个App1SessionManager、App2SessionManager来初始化</p>
- * @author rae
- * @since 2020/12/30
- */
 public abstract class SessionManager {
 
     @Nullable

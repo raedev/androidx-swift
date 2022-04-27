@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022 RAE
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package androidx.swift.util;
 
 import androidx.collection.SimpleArrayMap;
@@ -39,7 +55,7 @@ public final class RegexUtils {
         return isMatch(RegexConstants.REGEX_MOBILE_SIMPLE, input);
     }
 
-    
+
     /**
      * Returns the domain part of a given Email address
      *
@@ -82,11 +98,8 @@ public final class RegexUtils {
     public static boolean isFromAnyOfEmailProviders(String email, String[] emailProviders) {
         return androidx.swift.util.ArrayUtils.contains(emailProviders, extractEmailProvider(email));
     }
-    
-    
-    
-    
-    
+
+
     /**
      * Return whether input matches regex of exact mobile.
      *

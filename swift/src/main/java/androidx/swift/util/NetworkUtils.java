@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022 RAE
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package androidx.swift.util;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -263,8 +279,8 @@ public final class NetworkUtils {
         }
         return false;
     }
-    
-     /**
+
+    /**
      * Returns true if device is connecting to the internet via a proxy, works for both Wi-Fi and Mobile Data.
      *
      * @return true if using proxy to connect to the internet.
@@ -287,10 +303,6 @@ public final class NetworkUtils {
         }
     }
 
-    
-    
-    
-    
 
     /**
      * Return whether using mobile data.
