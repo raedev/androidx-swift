@@ -1,1 +1,21 @@
-include ':swift'
+pluginManagement {
+    repositories {
+        maven { url 'https://maven.raeblog.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url 'https://maven.raeblog.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        google()
+        mavenCentral()
+    }
+}
+
+//include ':swift'
+include ':kotlin'

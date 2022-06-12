@@ -1,6 +1,15 @@
 # Android 组件库
 
-一款Android 常用的开发组件库。
+# Swift
 
-[swift 组件文档](https://github.com/raedev/android-component/tree/master/swift)
+`Swfit` 是一个Android快速开发类库，包含日常开发中大部分应用场景以下几大功能：
+
+- 通用基类
+- MVP模式
+- 工具类（感谢`Blankj`开源的[AndroidUtilCode](https://github.com/Blankj/AndroidUtilCode)）
+- 适配器
+- 用户管理
+- 配置管理
+
+
 
