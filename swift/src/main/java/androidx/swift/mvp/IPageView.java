@@ -21,14 +21,17 @@ import androidx.swift.rxjava3.paging.PageableObservable;
 
 import java.util.List;
 
+/**
+ * @author rae
+ */
 public interface IPageView<T> extends LifecycleOwner {
 
     /**
      * 加载数据
-     * @param IPageable 分页
+     * @param pageable 分页
      * @param data 数据
      */
-    void onLoadData(PageableObservable<T> IPageable, List<T> data);
+    void onLoadData(PageableObservable<T> pageable, List<T> data);
 
     /**
      * 加载数据错误

@@ -20,6 +20,9 @@ package androidx.swift.mvp;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+/**
+ * @author rae
+ */
 public interface IPresenter extends LifecycleObserver, LifecycleOwner {
 
     /**

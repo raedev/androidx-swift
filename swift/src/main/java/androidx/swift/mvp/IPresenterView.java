@@ -23,6 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+/**
+ * @author rae
+ */
 public interface IPresenterView extends LifecycleOwner {
 
     /**

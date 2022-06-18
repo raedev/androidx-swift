@@ -25,27 +25,35 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.swift.rxjava3.core.Composer;
 
+import java.lang.ref.WeakReference;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.core.ObservableTransformer;
 
 
+/**
+ * BasePresenter
+ * @author rae
+ */
 public abstract class BasePresenter<V extends IPresenterView> implements IPresenter, ILoadMore, LifecycleEventObserver {
 
-    private V mView;
+    private WeakReference<V> mViewReference;
 
     public BasePresenter(@NonNull V view) {
         this.bindView(view);
     }
 
     public void bindView(@NonNull V view) {
-        this.mView = view;
+        this.mViewReference = new WeakReference<>(view);
         view.getLifecycle().addObserver(this);
     }
 
-    @NonNull
-    public V getView() {
-        return Objects.requireNonNull(mView);
+    protected V getView() {
+        return mViewReference.get();
+    }
+
+    protected V requireView() {
+        return Objects.requireNonNull(getView());
     }
 
     @Override
@@ -54,7 +62,7 @@ public abstract class BasePresenter<V extends IPresenterView> implements IPresen
     }
 
     protected Context getContext() {
-        return mView.getContext();
+        return requireView().getContext();
     }
 
     /**
@@ -116,6 +124,11 @@ public abstract class BasePresenter<V extends IPresenterView> implements IPresen
         if (event == Lifecycle.Event.ON_DESTROY) {
             source.getLifecycle().removeObserver(this);
             onDestroy();
+            // 解除View引用实例
+            if (mViewReference != null) {
+                mViewReference.clear();
+                mViewReference = null;
+            }
         }
         if (event == Lifecycle.Event.ON_START) {
             onStart();

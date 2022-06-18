@@ -27,6 +27,10 @@ import java.util.Objects;
 
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
+/**
+ * 初始化入口
+ * @author rae
+ */
 public final class AppSwift {
 
     private static final AppSwift S_INSTANCE = new AppSwift();
@@ -67,7 +71,7 @@ public final class AppSwift {
      */
     public void handleRxJavaError() {
         RxJavaPlugins.setErrorHandler(error -> {
-            Logger.e("RX未处理异常：" + error.getMessage(), error);
+            Logger.e("RxJava未处理异常：" + error.getMessage(), error);
         });
     }
 }

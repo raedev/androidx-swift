@@ -19,13 +19,27 @@ package androidx.swift.util.text;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+/**
+ * @author rae
+ */
 public interface SimpleTextWatcher extends TextWatcher {
 
+    /**
+     * 默认实现
+     * @param text 文本
+     * @param start 开始位置
+     * @param count 长度
+     * @param after 之前长度
+     */
     @Override
-    default void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    default void beforeTextChanged(CharSequence text, int start, int count, int after) {
     }
 
+    /**
+     * 默认实现
+     * @param text 文本
+     */
     @Override
-    default void afterTextChanged(Editable s) {
+    default void afterTextChanged(Editable text) {
     }
 }

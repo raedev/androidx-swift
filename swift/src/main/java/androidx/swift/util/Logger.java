@@ -18,6 +18,10 @@ package androidx.swift.util;
 
 import android.util.Log;
 
+/**
+ * 日志记录
+ * @author rae
+ */
 public final class Logger {
 
     public static boolean DEBUG = true;
