@@ -1,22 +1,21 @@
 pluginManagement {
     repositories {
-        maven { url 'https://maven.raeblog.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.raeblog.com/repository/public' }
         gradlePluginPortal()
-        google()
-        mavenCentral()
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven { url 'https://maven.raeblog.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        google()
-        mavenCentral()
+        maven { url 'https://maven.raeblog.com/repository/public' }
     }
 }
 
 //include ':swift'
 include ':kotlin'
 include ':app'
+include ':sword'

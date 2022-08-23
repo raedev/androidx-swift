@@ -9,14 +9,14 @@ import android.content.SharedPreferences
  * @date 2022/06/15
  * @copyright Copyright (c) https://github.com/raedev All rights reserved.
  */
-class SharedPreferencesSessionDelegate<T>(
+open class SharedPreferencesSessionDelegate<T : Any>(
     context: Context,
     name: String?,
     userClass: Class<T>
 ) : DefaultSessionDelegate<T>(context, name, userClass) {
 
 
-    private val preferences: SharedPreferences
+    protected val preferences: SharedPreferences
         get() {
             // com_your_name_session.xml
             val sessionName = name ?: "${context.packageName.replace(".", "_")}_session"
@@ -67,19 +67,19 @@ class SharedPreferencesSessionDelegate<T>(
         return preferences.getString(key, defaultValue)
     }
 
-    override fun getInt(key: String, defaultValue: Int?): Int {
+    override fun getInt(key: String, defaultValue: Int?): Int? {
         return preferences.getInt(key, defaultValue ?: 0)
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean?): Boolean {
-        return preferences.getBoolean(key, defaultValue ?: false)
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return preferences.getBoolean(key, defaultValue)
     }
 
-    override fun getFloat(key: String, defaultValue: Float?): Float {
+    override fun getFloat(key: String, defaultValue: Float?): Float? {
         return preferences.getFloat(key, defaultValue ?: 0f)
     }
 
-    override fun getLong(key: String, defaultValue: Long?): Long {
+    override fun getLong(key: String, defaultValue: Long?): Long? {
         return preferences.getLong(key, defaultValue ?: 0L)
     }
 }

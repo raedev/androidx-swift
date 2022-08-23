@@ -8,21 +8,19 @@ import android.content.Context
  * @date 2022/06/12
  * @copyright Copyright (c) https://github.com/raedev All rights reserved.
  */
-class SessionManager {
-
-    companion object {
-        /** 默认的Session提供者，请通过[Builder]进行初始化。 */
-        lateinit var default: SessionDelegate
-            private set
-    }
+object SessionManager : SessionDelegate by Builder.instance {
 
     @Suppress("UNCHECKED_CAST")
     class Builder<T : Any>(private val context: Context, private val userClass: Class<T>) {
 
+        companion object {
+            /** 默认的Session提供者，请通过[Builder]进行初始化。 */
+            internal lateinit var instance: SessionDelegate
+        }
+
         private var isJsonProvider: Boolean = false
         private var enableEncrypt: Boolean = false
         private var sessionName: String? = null
-
 
         /**
          * 配置名称，默认为包名+session。
@@ -32,7 +30,7 @@ class SessionManager {
          */
         fun sessionName(name: String): Builder<T> {
             sessionName = name
-            return this;
+            return this
         }
 
 
@@ -43,7 +41,7 @@ class SessionManager {
          */
         fun enableEncrypt(enableEncrypt: Boolean): Builder<T> {
             this.enableEncrypt = enableEncrypt
-            return this;
+            return this
         }
 
         /**
@@ -52,21 +50,21 @@ class SessionManager {
          * @return
          */
         fun jsonProvider(): Builder<T> {
-            this.isJsonProvider = true;
-            return this;
+            this.isJsonProvider = true
+            return this
         }
 
         /**
-         *  构建默认的管理器并且对默认的[default]对象赋值。
+         *  构建默认的管理器并且对默认的[instance]对象赋值。
          */
-        fun build() {
-            default = when (isJsonProvider) {
+        fun build(): SessionDelegate {
+            instance = when (isJsonProvider) {
                 true -> JsonSessionDelegate(context, sessionName, userClass)
                 else -> SharedPreferencesSessionDelegate(context, sessionName, userClass)
             }
-            val delegate = default as DefaultSessionDelegate<T>
+            val delegate = instance as DefaultSessionDelegate<T>
             delegate.enableEncrypt = this.enableEncrypt
+            return delegate
         }
     }
-
 }

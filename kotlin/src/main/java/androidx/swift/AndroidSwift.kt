@@ -1,6 +1,7 @@
 package androidx.swift
 
 import android.app.Application
+import androidx.swift.util.Utils
 
 /**
  * 初始化入口
@@ -10,14 +11,13 @@ import android.app.Application
  */
 object AndroidSwift {
 
-    lateinit var context: Application
-        private set;
+    val context: Application = Utils.getApp()
 
     /**
      *  请在[Application]中初始化
      */
     fun init(context: Application) {
-        this.context = context;
+        Utils.init(context)
     }
 
 }

@@ -13,39 +13,40 @@ import kotlin.concurrent.thread
  * @date 2022/06/15
  * @copyright Copyright (c) https://github.com/raedev All rights reserved.
  */
-class JsonSessionDelegate<T>(
+open class JsonSessionDelegate<T : Any>(
     context: Context,
     name: String?,
     userClass: Class<T>
 ) : DefaultSessionDelegate<T>(context, name, userClass) {
 
-    private var cacheJsonBean: MutableMap<String, Any>? = null
+    companion object {
+        val LOCK: Any = Any()
+    }
 
-    private val filePath: String
-        get() {
-            val sessionName = name ?: "${context.packageName}.session"
-            return File(context.cacheDir, "$sessionName.json").path
-        }
+    /**
+     * JSON文件路径
+     */
+    protected val filePath: String by lazy {
+        val sessionName = name ?: "${context.packageName}.session"
+        File(context.cacheDir, if (enableEncrypt) sessionName else "$sessionName.json").path
+    }
 
-
-    private val jsonBean: MutableMap<String, Any>
-        get() {
-            if (cacheJsonBean == null) {
-                var json = FileIOUtils.readFile2String(filePath) ?: return mutableMapOf()
-                json = if (enableEncrypt) decrypt(json) else json
-                val typeToken = object : TypeToken<MutableMap<String, Any>>() {}
-                cacheJsonBean = gson.fromJson(json, typeToken.type) ?: mutableMapOf()
-            }
-            return cacheJsonBean!!
-        }
+    private val jsonBean: MutableMap<String, Any> by lazy {
+        var json = FileIOUtils.readFile2String(filePath) ?: return@lazy mutableMapOf()
+        json = if (enableEncrypt) decrypt(json) else json
+        val typeToken = object : TypeToken<MutableMap<String, Any>>() {}
+        gson.fromJson(json, typeToken.type) ?: mutableMapOf()
+    }
 
     @Synchronized
-    private fun persisting() {
+    protected open fun persisting() {
         thread {
-            var json = gson.toJson(jsonBean)
-            json = if (enableEncrypt) encrypt(json) else json
-            FileIOUtils.writeFileFromString(filePath, json)
-        }.run()
+            synchronized(LOCK) {
+                var json = gson.toJson(jsonBean)
+                json = if (enableEncrypt) encrypt(json) else json
+                FileIOUtils.writeFileFromString(filePath, json)
+            }
+        }
     }
 
     override fun onSaveUserInfo(user: T?) {
@@ -65,30 +66,41 @@ class JsonSessionDelegate<T>(
     }
 
     override fun <V> get(key: String, cls: Class<V>): V? {
-        val json = getString(key)
+        val json = gson.toJson(jsonBean[key])
         return gson.fromJson(json, cls)
     }
-
-    private inline fun <reified V> get(key: String): V {
-        val value = jsonBean[key]
-        return value as V
-    }
-
-    override fun getString(key: String, defaultValue: String?): String? = get(key)
-    override fun getInt(key: String, defaultValue: Int?): Int = get(key)
-    override fun getBoolean(key: String, defaultValue: Boolean?): Boolean = get(key)
-    override fun getFloat(key: String, defaultValue: Float?): Float = get(key)
-    override fun getLong(key: String, defaultValue: Long?): Long = get(key)
 
     @Synchronized
     override fun clear() {
         thread {
-            FileUtils.delete(filePath)
-        }.run()
+            synchronized(LOCK) {
+                FileUtils.delete(filePath)
+            }
+        }
     }
 
     override fun remove(key: String) {
         jsonBean.remove(key)
         persisting()
+    }
+
+    override fun getString(key: String, defaultValue: String?): String? {
+        return if (jsonBean[key] == null) defaultValue else jsonBean[key].toString()
+    }
+
+    override fun getInt(key: String, defaultValue: Int?): Int? {
+        return jsonBean[key]?.let { (it as Double).toInt() } ?: defaultValue
+    }
+
+    override fun getFloat(key: String, defaultValue: Float?): Float? {
+        return jsonBean[key]?.let { (it as Double).toFloat() } ?: defaultValue
+    }
+
+    override fun getLong(key: String, defaultValue: Long?): Long? {
+        return jsonBean[key]?.let { (it as Double).toLong() } ?: defaultValue
+    }
+
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return jsonBean[key]?.toString().toBoolean()
     }
 }

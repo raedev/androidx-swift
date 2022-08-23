@@ -62,7 +62,7 @@ interface SessionDelegate {
      * @param key 存储的键
      * @param defaultValue 当为空时返回的默认值
      */
-    fun getInt(key: String, defaultValue: Int? = null): Int
+    fun getInt(key: String, defaultValue: Int? = null): Int?
 
     /**
      * 获取Session额外的值
@@ -70,7 +70,7 @@ interface SessionDelegate {
      * @param key 存储的键
      * @param defaultValue 当为空时返回的默认值
      */
-    fun getBoolean(key: String, defaultValue: Boolean? = false): Boolean
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean
 
     /**
      * 获取Session额外的值
@@ -78,7 +78,7 @@ interface SessionDelegate {
      * @param key 存储的键
      * @param defaultValue 当为空时返回的默认值
      */
-    fun getFloat(key: String, defaultValue: Float? = null): Float
+    fun getFloat(key: String, defaultValue: Float? = null): Float?
 
     /**
      * 获取Session额外的值
@@ -86,5 +86,15 @@ interface SessionDelegate {
      * @param key 存储的键
      * @param defaultValue 当为空时返回的默认值
      */
-    fun getLong(key: String, defaultValue: Long? = null): Long
+    fun getLong(key: String, defaultValue: Long? = null): Long?
+
+    /**
+     * 添加用户监听
+     */
+    fun addSessionListener(listener: SessionStateListener)
+
+    /**
+     * 移除用户监听
+     */
+    fun removeSessionListener(listener: SessionStateListener)
 }

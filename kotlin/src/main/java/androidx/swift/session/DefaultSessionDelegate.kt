@@ -1,6 +1,7 @@
 package androidx.swift.session
 
 import android.content.Context
+import androidx.swift.util.ConvertUtils
 import androidx.swift.util.EncryptUtils
 import androidx.swift.util.GsonUtils
 import com.google.gson.Gson
@@ -12,7 +13,7 @@ import com.google.gson.Gson
  * @copyright Copyright (c) https://github.com/raedev All rights reserved.
  */
 @Suppress("MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
-abstract class DefaultSessionDelegate<T>(
+abstract class DefaultSessionDelegate<T : Any>(
     internal val context: Context,
     internal val name: String?,
     internal val userClass: Class<T>
@@ -35,8 +36,30 @@ abstract class DefaultSessionDelegate<T>(
     /** 是否启用DES加密 */
     var enableEncrypt: Boolean = false
 
+    private val sessionStateListeners = mutableListOf<SessionStateListener>()
+
+
+    override fun addSessionListener(listener: SessionStateListener) {
+        if (!sessionStateListeners.contains(listener)) {
+            sessionStateListeners.add(listener)
+        }
+    }
+
+    override fun removeSessionListener(listener: SessionStateListener) {
+        sessionStateListeners.remove(listener)
+    }
+
+    /**
+     * 通知用户信息发生改变
+     */
+    protected fun notifyUserInfoChanged(old: T?, n: T?) {
+        sessionStateListeners.forEach { it.onUserInfoChanged(this, old, n) }
+    }
+
     override fun <V> setUser(user: V) {
         onSaveUserInfo(user as T)
+        // 通知用户改变
+        notifyUserInfoChanged(currentUser, user)
         currentUser = user
     }
 
@@ -44,6 +67,7 @@ abstract class DefaultSessionDelegate<T>(
         return when (currentUser) {
             null -> {
                 currentUser = onLoadUser()
+                notifyUserInfoChanged(null, currentUser)
                 return currentUser as V
             }
             else -> currentUser as V
@@ -51,6 +75,7 @@ abstract class DefaultSessionDelegate<T>(
     }
 
     override fun forgot() {
+        notifyUserInfoChanged(currentUser, null)
         currentUser = null
         onSaveUserInfo(null)
     }
@@ -63,16 +88,14 @@ abstract class DefaultSessionDelegate<T>(
 
     /** 加密 */
     protected fun encrypt(value: String): String {
-        return EncryptUtils.encryptDES2HexString(
-            value.toByteArray(), encryptKey, "CBC", encryptIV
-        ).ifEmpty { value }
+        return EncryptUtils.encryptDES2HexString(value.toByteArray(), encryptKey, "DES", encryptIV)
+            .ifEmpty { value }
     }
 
     /** 解密 */
     protected fun decrypt(value: String): String {
-        return EncryptUtils.encryptDES2HexString(
-            value.toByteArray(), encryptKey, "CBC", encryptIV
-        ).ifEmpty { value }
+        val bytes: ByteArray = EncryptUtils.decryptHexStringDES(value, encryptKey, "DES", encryptIV)
+        return ConvertUtils.bytes2String(bytes)
     }
 
 }
