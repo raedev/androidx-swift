@@ -15,7 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-//include ':swift'
-include ':kotlin'
 include ':app'
+include ':kotlin'
 include ':sword'

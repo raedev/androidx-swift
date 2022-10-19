@@ -13,11 +13,4 @@ object AndroidSwift {
 
     val context: Application = Utils.getApp()
 
-    /**
-     *  请在[Application]中初始化
-     */
-    fun init(context: Application) {
-        Utils.init(context)
-    }
-
 }

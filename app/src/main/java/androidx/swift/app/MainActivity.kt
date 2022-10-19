@@ -3,36 +3,38 @@ package androidx.swift.app
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.swift.AndroidSwift
 import androidx.swift.core.AppConfigManager
 import androidx.swift.session.SessionManager
-import androidx.swift.sword.env.ApiEnvironment
-import androidx.swift.sword.env.ApiEnvironmentUrl
-import androidx.swift.sword.provider.RetrofitFactory
+import androidx.swift.sword.SdkObserver
+import androidx.swift.sword.paging.PageObservable
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AndroidSwift.init(application)
-        SessionManager.Builder(this.applicationContext, UserInfo::class.java).build()
+        SessionManager.setDefault(
+            SessionManager.Builder(
+                this.applicationContext,
+                UserInfo::class.java
+            ).build()
+        )
 
-        var user = SessionManager.getUser<UserInfo>()
+        var user = SessionManager.getDefault().getUser<UserInfo>()
         Log.d("Rae", "缓存用户$user")
-        Log.d("rae", "自定义值：${SessionManager.getFloat("isFloat", 1f)}")
-        Log.d("rae", "Object：${SessionManager.get("isObject", UserInfo::class.java)}")
+        Log.d("rae", "自定义值：${SessionManager.getDefault().getFloat("isFloat", 1f)}")
+        Log.d("rae", "Object：${SessionManager.getDefault().get("isObject", UserInfo::class.java)}")
         user = UserInfo("Rae", "123")
 
-        SessionManager.setUser(user)
+        SessionManager.getDefault().setUser(user)
         Log.d("Rae", "设置用户$user")
 
-        SessionManager.put("isBoolean", true)
-        SessionManager.put("isString", "rae is a boy")
-        SessionManager.put("isInt", 1314)
-        SessionManager.put("isFloat", 3.14f)
-        SessionManager.put("isLong", 3000L)
-        SessionManager.put("isObject", UserInfo("newObject", "111"))
+        SessionManager.getDefault().put("isBoolean", true)
+        SessionManager.getDefault().put("isString", "rae is a boy")
+        SessionManager.getDefault().put("isInt", 1314)
+        SessionManager.getDefault().put("isFloat", 3.14f)
+        SessionManager.getDefault().put("isLong", 3000L)
+        SessionManager.getDefault().put("isObject", UserInfo("newObject", "111"))
 
         val appConfig = AppConfigManager.getConfig(AppConfig::class)
 
@@ -49,18 +51,6 @@ class MainActivity : AppCompatActivity() {
         Log.i("Rae", "名称：${config}")
         Log.i("Rae", "配置用户：${config.userInfo?.name}")
 
-        RetrofitFactory.newBuilder()
-            .debug(true)
-            .tag("URL")
-            .environment(ApiEnvironment.DEBUG)
-            .addEnvironment(
-                ApiEnvironmentUrl(
-                    ApiEnvironment.DEBUG, "https://192.168.0.1/", mutableMapOf(
-                        "map" to ""
-                    )
-                )
-            )
-            .build()
     }
 }
 

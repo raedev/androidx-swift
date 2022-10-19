@@ -3,6 +3,7 @@ package androidx.swift.sword
 import androidx.swift.exception.SdkException
 import io.reactivex.rxjava3.observers.DisposableObserver
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 /**
  * SDK回调
@@ -13,16 +14,18 @@ import java.net.ConnectException
 abstract class SdkObserver<T> : DisposableObserver<T>() {
 
     override fun onError(e: Throwable) {
-        var message = e.message ?: return
+        if (isDisposed) return
+        var message = e.message ?: "程序发生未知的异常"
         when (e) {
             is ConnectException -> message = "网络连接错误，请检查网络设置"
+            is SocketTimeoutException -> message = "网络连接超时，请重试"
             is SdkException -> {
                 onError(message, e.errorCode)
                 return
             }
             is RuntimeException -> {
                 // 解析Rx包装多了的一层
-                message = e.cause!!.message ?: message
+                message = e.cause?.message ?: message
             }
         }
         onError(message)

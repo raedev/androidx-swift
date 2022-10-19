@@ -8,15 +8,25 @@ import android.content.Context
  * @date 2022/06/12
  * @copyright Copyright (c) https://github.com/raedev All rights reserved.
  */
-object SessionManager : SessionDelegate by Builder.instance {
+object SessionManager {
+
+    /** 默认的Session提供者，请通过[Builder]进行初始化。 */
+    internal lateinit var instance: SessionDelegate
+
+    /** 设置默认的管理器 */
+    fun setDefault(delegate: SessionDelegate) {
+        instance = delegate
+    }
+
+    /** 获取默认的管理器 */
+    fun getDefault(): SessionDelegate {
+        return instance
+    }
+
 
     @Suppress("UNCHECKED_CAST")
     class Builder<T : Any>(private val context: Context, private val userClass: Class<T>) {
 
-        companion object {
-            /** 默认的Session提供者，请通过[Builder]进行初始化。 */
-            internal lateinit var instance: SessionDelegate
-        }
 
         private var isJsonProvider: Boolean = false
         private var enableEncrypt: Boolean = false
@@ -58,13 +68,12 @@ object SessionManager : SessionDelegate by Builder.instance {
          *  构建默认的管理器并且对默认的[instance]对象赋值。
          */
         fun build(): SessionDelegate {
-            instance = when (isJsonProvider) {
+            return when (isJsonProvider) {
                 true -> JsonSessionDelegate(context, sessionName, userClass)
                 else -> SharedPreferencesSessionDelegate(context, sessionName, userClass)
+            }.apply {
+                this.enableEncrypt = this@Builder.enableEncrypt
             }
-            val delegate = instance as DefaultSessionDelegate<T>
-            delegate.enableEncrypt = this.enableEncrypt
-            return delegate
         }
     }
 }

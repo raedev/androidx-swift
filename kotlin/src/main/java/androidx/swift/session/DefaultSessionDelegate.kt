@@ -17,8 +17,7 @@ abstract class DefaultSessionDelegate<T : Any>(
     internal val context: Context,
     internal val name: String?,
     internal val userClass: Class<T>
-) :
-    SessionDelegate {
+) : SessionDelegate {
 
     protected val gson: Gson = GsonUtils.getGson()
 
@@ -67,7 +66,6 @@ abstract class DefaultSessionDelegate<T : Any>(
         return when (currentUser) {
             null -> {
                 currentUser = onLoadUser()
-                notifyUserInfoChanged(null, currentUser)
                 return currentUser as V
             }
             else -> currentUser as V
@@ -76,8 +74,8 @@ abstract class DefaultSessionDelegate<T : Any>(
 
     override fun forgot() {
         notifyUserInfoChanged(currentUser, null)
-        currentUser = null
         onSaveUserInfo(null)
+        currentUser = null
     }
 
     /** 加载用户 */
