@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'androidx.swift'
     compileSdk 32
 
     defaultConfig {
@@ -32,21 +33,26 @@ android {
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.google.code.gson:gson:2.9.1'
-
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.20"
+    // base on https://github.com/Blankj/AndroidUtilCode
+    api 'com.blankj:utilcodex:1.31.1'
 }
 
 // 发布到Maven库
-apply from: rootProject.file('upload.gradle')
-ext {
-    ARTIFACT_GROUP = 'androidx.swift'
-    ARTIFACT_ID = 'core-ktx'
-    ARTIFACT_VERSION = '1.0.0'
-    ARTIFACT_DESC = 'A quickly tools for android development.'
-    ARTIFACT_URL = 'https://github.com/raedev/android-component'
+def upload = rootProject.file('upload.gradle')
+if (upload.exists()) {
+    apply from: upload
+    ext {
+        ARTIFACT_GROUP = 'androidx.swift'
+        ARTIFACT_ID = 'core-ktx'
+        ARTIFACT_VERSION = '1.0.2'
+        ARTIFACT_DESC = 'A quickly tools for android development.'
+        ARTIFACT_URL = 'https://github.com/raedev/androidx-swift'
+    }
 }

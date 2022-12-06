@@ -3,10 +3,8 @@ package androidx.swift.app
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.swift.core.AppConfigManager
+import androidx.swift.core.ConfigManager
 import androidx.swift.session.SessionManager
-import androidx.swift.sword.SdkObserver
-import androidx.swift.sword.paging.PageObservable
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         SessionManager.getDefault().put("isLong", 3000L)
         SessionManager.getDefault().put("isObject", UserInfo("newObject", "111"))
 
-        val appConfig = AppConfigManager.getConfig(AppConfig::class)
+        val appConfig = ConfigManager.create(AppConfig::class)
 
         println(appConfig.appName)
 
